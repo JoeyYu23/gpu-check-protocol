@@ -1,0 +1,29 @@
+# Test output directories and results
+output/
+
+# Benchmark tool binaries (not committed to repo - download manually)
+tools/*.exe
+tools/*.zip
+tools/FurMark/
+tools/OCCT/
+tools/cpuz*/
+tools/HWiNFO*/
+
+# Zip packages
+*.zip
+
+# Windows artifacts
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# PowerShell temp files
+*.ps1.bak
+
+# Editor artifacts
+*.bak
+.vscode/
+.idea/
+
+# macOS artifacts (if cross-platform dev)
+.DS_Store

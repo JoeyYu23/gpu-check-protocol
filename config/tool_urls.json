@@ -1,0 +1,57 @@
+{
+  "_comment": "Tool download URLs for GPU verification tools. All are free portable versions.",
+  "tools": {
+    "GPU-Z": {
+      "filename": "GPU-Z.exe",
+      "description": "GPU information and monitoring tool by TechPowerUp",
+      "url": "https://www.techpowerup.com/download/techpowerup-gpu-z/",
+      "direct_url": "https://download.techpowerup.com/files/GPU-Z.2.61.0.exe",
+      "portable": true,
+      "required": true
+    },
+    "CPU-Z": {
+      "filename": "cpuz_x64.exe",
+      "description": "CPU, motherboard, RAM information tool by CPUID",
+      "url": "https://www.cpuid.com/softwares/cpu-z.html",
+      "direct_url": "https://download.cpuid.com/cpu-z/cpu-z_2.12-en.zip",
+      "portable": true,
+      "required": false
+    },
+    "HWiNFO64": {
+      "filename": "HWiNFO64.exe",
+      "description": "Hardware monitoring with CSV sensor logging by REALiX",
+      "url": "https://www.hwinfo.com/download/",
+      "direct_url": "https://www.hwinfo.com/files/hwi_800.exe",
+      "portable": true,
+      "required": false
+    },
+    "FurMark": {
+      "filename": "FurMark.exe",
+      "description": "GPU stability and burn-in test by Geeks3D",
+      "url": "https://geeks3d.com/furmark/",
+      "direct_url": "https://geeks3d.com/dl/get/928",
+      "portable": false,
+      "required": false,
+      "install_subdir": "FurMark",
+      "note": "FurMark requires installation. Install to tools/FurMark/ directory."
+    },
+    "OCCT": {
+      "filename": "OCCT.exe",
+      "description": "GPU VRAM and stability test by OCBASE",
+      "url": "https://www.ocbase.com/download",
+      "direct_url": "https://www.ocbase.com/download/OCCT-installer.exe",
+      "portable": false,
+      "required": false,
+      "install_subdir": "OCCT",
+      "note": "OCCT requires installation. Install to tools/OCCT/ directory."
+    }
+  },
+  "tools_dir": "tools",
+  "expected_paths": {
+    "GPU-Z": "tools/GPU-Z.exe",
+    "CPU-Z": "tools/cpuz_x64.exe",
+    "HWiNFO64": "tools/HWiNFO64.exe",
+    "FurMark": "tools/FurMark/FurMark.exe",
+    "OCCT": "tools/OCCT/OCCT.exe"
+  }
+}

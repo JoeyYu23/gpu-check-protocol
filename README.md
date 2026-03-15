@@ -41,6 +41,64 @@ An interactive menu appears at startup — select the verification depth you nee
 
 ---
 
+## GUI 模式（推荐新手）
+
+**双击 `run_windows_gui.bat`** 即可打开图形界面，无需命令行知识。
+
+```
+┌─────────────────────────────────────────────┐
+│  PC 验机工具 v2.0                            │  ← 蓝色标题栏
+│  二手电脑交易验机 · 安全开源 · 不上传数据    │
+├─────────────────────────────────────────────┤
+│  √ 不联网 · 不碰个人文件 · 代码完全公开      │  ← 绿色安全标识
+├─────────────────────────────────────────────┤
+│  选择测试模式                                │
+│  ○ 快速验机（约5分钟）                       │
+│  ● 标准验机（约15分钟）★ 推荐               │  ← 默认选中
+│  ○ 完整验机（约30-40分钟）                   │
+│  ○ 自定义                                    │
+├─────────────────────────────────────────────┤
+│  [进度条]                                    │  ← 点击开始后显示
+│  实时日志输出...                             │
+├─────────────────────────────────────────────┤
+│           [ 开始验机 ]           [ 退出 ]    │
+└─────────────────────────────────────────────┘
+```
+
+**界面特点：**
+- 中文全程提示，不出现黑色命令行窗口
+- 测试在后台运行，界面始终可响应
+- 实时日志滚动显示当前进度
+- 完成后一键打开结果文件夹
+
+**打包成 EXE（可选）：** 如需分发给完全不懂电脑的用户，运行 `build_exe.ps1` 将工具打包为单个 `PC验机工具.exe`：
+
+```powershell
+# 右键 build_exe.ps1 → "用 PowerShell 运行"
+# 首次运行会自动安装 ps2exe 模块（需联网）
+# 生成 PC验机工具.exe，可单独复制给买家
+```
+
+> 注意：EXE 打包需要 ps2exe 模块（`Install-Module ps2exe`）。目标机器需 Windows 10/11 和 .NET Framework 4.5+（系统自带）。
+
+---
+
+## GUI Mode (Recommended for beginners)
+
+**Double-click `run_windows_gui.bat`** to open the graphical interface — no command-line knowledge needed.
+
+The window shows:
+- Blue header with tool name and subtitle
+- Green safety badge confirming no network access
+- Radio buttons for test mode selection (Standard is pre-selected)
+- Optional custom test checkboxes (shown when "Custom" is selected)
+- Real-time log output area with progress bar (appears after clicking Start)
+- "Open Results Folder" button after completion
+
+**Build as EXE (optional):** Run `build_exe.ps1` to compile the GUI into a standalone `PC验机工具.exe` using ps2exe.
+
+---
+
 ## 快速开始（3步）
 
 ### 第一步：下载本工具
@@ -62,7 +120,8 @@ An interactive menu appears at startup — select the verification depth you nee
 
 ### 第三步：运行验机
 
-**双击 `run_windows.bat`**（推荐右键"以管理员身份运行"以获取完整硬件数据）
+- **图形界面（推荐）：双击 `run_windows_gui.bat`**
+- **命令行模式：双击 `run_windows.bat`**（右键"以管理员身份运行"以获取完整硬件数据）
 
 验机完成后，结果保存在 `output/<时间戳>/` 目录，并自动打包为 ZIP。
 
@@ -89,7 +148,8 @@ Place the following tools in the `tools/` directory (download links below):
 
 ### Step 3: Run verification
 
-**Double-click `run_windows.bat`** (recommended: right-click → "Run as Administrator" for full hardware data)
+- **GUI mode (recommended): Double-click `run_windows_gui.bat`**
+- **CLI mode: Double-click `run_windows.bat`** (right-click → "Run as Administrator" for full hardware data)
 
 Results are saved to `output/<timestamp>/` and automatically zipped.
 
@@ -161,7 +221,7 @@ Select **[3] Full** mode — complete verification in ~30-40 minutes.
 ## 常见问题 FAQ
 
 **Q: 运行时提示"此脚本无法运行"？/ "Script cannot be run" error?**
-A: 右键 `run_windows.bat` → "以管理员身份运行" / Right-click `run_windows.bat` → "Run as Administrator"
+A: 右键 `run_windows_gui.bat`（或 `run_windows.bat`）→ "以管理员身份运行" / Right-click `run_windows_gui.bat` (or `run_windows.bat`) → "Run as Administrator"
 
 **Q: 截图是黑屏？/ Screenshots are black?**
 A: 部分系统的图形保护会阻止截图。手动截图（Win+Shift+S）保存到 `output/` 目录即可。/

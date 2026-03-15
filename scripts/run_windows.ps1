@@ -25,7 +25,10 @@
 #>
 
 param(
-    [string]$ScriptRoot = $PSScriptRoot
+    [string]$ScriptRoot = $PSScriptRoot,
+    [switch]$NonInteractive,
+    [string]$TestMode    = "",   # "quick" | "standard" | "full" | "custom"
+    [string]$CustomTests = ""    # comma-separated: "furmark,vram,cpu,memory,disk,thermal"
 )
 
 Set-StrictMode -Off
@@ -135,30 +138,16 @@ $RunMemoryTest    = $false
 $RunDiskHealth    = $false
 $RunThermalStress = $false
 
-# Show menu and get user choice
-$MenuChoice = $null
-while ($null -eq $MenuChoice) {
-    Show-MainMenu
-    $input = Read-Host
-    switch ($input.Trim()) {
-        "0" {
-            Write-Host ""
-            Write-Host "已退出。" -ForegroundColor Gray
-            exit 0
+# ---------------------------------------------------------------------------
+# Non-interactive mode: parse -TestMode / -CustomTests from GUI caller
+# ---------------------------------------------------------------------------
+if ($NonInteractive) {
+    switch ($TestMode.ToLower()) {
+        "quick" {
+            $RunDiskHealth = $true
+            $MenuChoice    = "quick"
         }
-        "1" {
-            # Quick: system info + disk SMART
-            $RunDiskHealth    = $true
-            $MenuChoice       = "quick"
-        }
-        "2" {
-            # Standard (recommended): system info + GPU stress + disk SMART
-            $RunFurmark       = $true
-            $RunDiskHealth    = $true
-            $MenuChoice       = "standard"
-        }
-        "3" {
-            # Full: all tests
+        "full" {
             $RunFurmark       = $true
             $RunOcctVram      = $true
             $RunCpuStress     = $true
@@ -166,24 +155,78 @@ while ($null -eq $MenuChoice) {
             $RunDiskHealth    = $true
             $MenuChoice       = "full"
         }
-        "4" {
-            # Custom: user selects
-            Show-CustomMenu
-            $customInput = Read-Host
-            $selections = $customInput -split "," | ForEach-Object { $_.Trim() }
-            # Item 1 (system info) is always included
-            if ($selections -contains "2") { $RunFurmark       = $true }
-            if ($selections -contains "3") { $RunOcctVram      = $true }
-            if ($selections -contains "4") { $RunCpuStress     = $true }
-            if ($selections -contains "5") { $RunMemoryTest    = $true }
-            if ($selections -contains "6") { $RunDiskHealth    = $true }
-            if ($selections -contains "7") { $RunThermalStress = $true }
+        "custom" {
+            $selections = $CustomTests.ToLower() -split "," | ForEach-Object { $_.Trim() }
+            if ($selections -contains "furmark")  { $RunFurmark       = $true }
+            if ($selections -contains "vram")     { $RunOcctVram      = $true }
+            if ($selections -contains "cpu")      { $RunCpuStress     = $true }
+            if ($selections -contains "memory")   { $RunMemoryTest    = $true }
+            if ($selections -contains "disk")     { $RunDiskHealth    = $true }
+            if ($selections -contains "thermal")  { $RunThermalStress = $true }
             $MenuChoice = "custom"
         }
         default {
-            Write-Host ""
-            Write-Host "无效输入，请重新选择 (0-4)。" -ForegroundColor Red
-            Start-Sleep -Seconds 1
+            # "standard" or empty — default recommended mode
+            $RunFurmark    = $true
+            $RunDiskHealth = $true
+            $MenuChoice    = "standard"
+        }
+    }
+
+    Write-Log "非交互模式: TestMode=$TestMode CustomTests=$CustomTests" "INFO"
+} else {
+    # ---------------------------------------------------------------------------
+    # Interactive menu (original behavior — unchanged)
+    # ---------------------------------------------------------------------------
+    $MenuChoice = $null
+    while ($null -eq $MenuChoice) {
+        Show-MainMenu
+        $input = Read-Host
+        switch ($input.Trim()) {
+            "0" {
+                Write-Host ""
+                Write-Host "已退出。" -ForegroundColor Gray
+                exit 0
+            }
+            "1" {
+                # Quick: system info + disk SMART
+                $RunDiskHealth    = $true
+                $MenuChoice       = "quick"
+            }
+            "2" {
+                # Standard (recommended): system info + GPU stress + disk SMART
+                $RunFurmark       = $true
+                $RunDiskHealth    = $true
+                $MenuChoice       = "standard"
+            }
+            "3" {
+                # Full: all tests
+                $RunFurmark       = $true
+                $RunOcctVram      = $true
+                $RunCpuStress     = $true
+                $RunMemoryTest    = $true
+                $RunDiskHealth    = $true
+                $MenuChoice       = "full"
+            }
+            "4" {
+                # Custom: user selects
+                Show-CustomMenu
+                $customInput = Read-Host
+                $selections = $customInput -split "," | ForEach-Object { $_.Trim() }
+                # Item 1 (system info) is always included
+                if ($selections -contains "2") { $RunFurmark       = $true }
+                if ($selections -contains "3") { $RunOcctVram      = $true }
+                if ($selections -contains "4") { $RunCpuStress     = $true }
+                if ($selections -contains "5") { $RunMemoryTest    = $true }
+                if ($selections -contains "6") { $RunDiskHealth    = $true }
+                if ($selections -contains "7") { $RunThermalStress = $true }
+                $MenuChoice = "custom"
+            }
+            default {
+                Write-Host ""
+                Write-Host "无效输入，请重新选择 (0-4)。" -ForegroundColor Red
+                Start-Sleep -Seconds 1
+            }
         }
     }
 }
@@ -201,8 +244,10 @@ if ($RunDiskHealth)    { Write-Host "  [选中] 硬盘 SMART 健康度"         
 if ($RunThermalStress) { Write-Host "  [选中] 散热综合评估 (CPU+GPU 同时满载)"  -ForegroundColor Magenta }
 Write-Host "============================================================" -ForegroundColor DarkCyan
 Write-Host ""
-Write-Host "按 Enter 开始验机，或按 Ctrl+C 取消..." -ForegroundColor Gray
-$null = Read-Host
+if (-not $NonInteractive) {
+    Write-Host "按 Enter 开始验机，或按 Ctrl+C 取消..." -ForegroundColor Gray
+    $null = Read-Host
+}
 
 # ---------------------------------------------------------------------------
 # Create timestamped output directory

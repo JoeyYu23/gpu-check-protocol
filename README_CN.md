@@ -1,0 +1,173 @@
+# PC Check Protocol
+
+[![中文](https://img.shields.io/badge/语言-中文-red?style=for-the-badge)](README_CN.md) [![English](https://img.shields.io/badge/Lang-English-blue?style=for-the-badge)](README.md)
+
+**二手电脑交易验机工具**
+
+一键收集硬件信息、运行多项压力测试、打包结果，帮助买卖双方在交易中快速完成整机验机。
+
+---
+
+## 安全声明
+
+- **不联网、不上传**：所有数据只保存在本机 `output/` 目录，不发送到任何服务器
+- **不访问个人文件**：只读取硬件信息（型号、驱动版本、温度），不碰文档、图片、密码
+- **不留后台服务**：脚本运行完毕即结束，不安装任何常驻程序
+- **不修改系统设置**（除 HWiNFO64 的 CSV 记录注册表项，测试后可手动删除）
+- **开源可审计**：所有 `.ps1` 脚本均为明文 PowerShell，可用记事本打开查看
+
+---
+
+## 图形界面（推荐）
+
+**双击 `run_windows_gui.bat`** 打开图形界面，勾选测试项，点开始即可：
+
+```
+┌─────────────────────────────────────────────┐
+│  PC 验机工具 v2.0                            │
+│  安全开源 · 不联网 · 不碰个人文件              │
+├─────────────────────────────────────────────┤
+│                                             │
+│  请勾选要运行的测试项目：                      │
+│                                             │
+│  ☑ 电脑基本信息        [必选]  约1分钟        │
+│    读取 CPU/显卡/内存/主板型号                 │
+│                                             │
+│  ☑ 硬盘健康度检查              约1分钟        │
+│    检查硬盘坏道、使用时长、剩余寿命             │
+│                                             │
+│  ☐ 显卡压力测试                约5分钟        │
+│    让显卡全力运行，测试是否稳定不崩溃           │
+│                                             │
+│  ☐ 显存测试                   约10分钟        │
+│    测试显卡内存是否有坏点                      │
+│                                             │
+│  ☐ CPU 压力测试               约10分钟        │
+│    让CPU全力运行，测温度和稳定性               │
+│                                             │
+│  ☐ 内存稳定性测试              约5分钟        │
+│    测试内存条是否有错误                        │
+│                                             │
+│  ☐ 散热综合测试               约10分钟        │
+│    CPU+显卡同时满载，测散热系统                 │
+│                                             │
+│  预计总时长：约 2 分钟                        │
+│                                             │
+│        [ 开始验机 ]           [ 退出 ]        │
+└─────────────────────────────────────────────┘
+```
+
+- 勾多少测多少，预计时长实时更新
+- 测试在后台运行，界面始终可响应
+- 完成后按钮变为"打开结果文件夹"
+
+---
+
+## 命令行模式
+
+**双击 `run_windows.bat`**（建议右键"以管理员身份运行"）
+
+命令行版本显示交互菜单，输入编号选择测试项目（支持多选）：
+
+```
+请选择要运行的测试项目 (输入编号，多选用逗号分隔，如: 2,3,5):
+
+  [1] 电脑基本信息        (必选，自动包含)     约1分钟
+  [2] 硬盘健康度检查                          约1分钟
+  [3] 显卡压力测试 (FurMark)                  约5分钟
+  [4] 显存测试 (OCCT)                         约10分钟
+  [5] CPU 压力测试                            约10分钟
+  [6] 内存稳定性测试                           约5分钟
+  [7] 散热综合测试                            约10分钟
+
+  [A] 全选    [0] 退出
+```
+
+---
+
+## 快速开始（3步）
+
+### 第一步：下载本工具
+
+从 GitHub 页面点 **Code → Download ZIP**，解压到任意目录。
+
+### 第二步：下载测试工具（可选）
+
+将以下工具放入 `tools/` 目录以获得完整功能：
+
+| 工具 | 放置路径 | 用途 |
+|------|---------|------|
+| HWiNFO64.exe | `tools/HWiNFO64.exe` | 传感器实时记录（温度/功耗/风扇） |
+| FurMark.exe | `tools/FurMark/FurMark.exe` | GPU 烤机压力测试 |
+| OCCT.exe | `tools/OCCT/OCCT.exe` | 显存/CPU/内存测试 |
+| DiskInfo64.exe | `tools/CrystalDiskInfo/DiskInfo64.exe` | 硬盘详情（可选） |
+
+GPU-Z 和 CPU-Z 会**自动下载**。没有 FurMark/OCCT 也能跑——内置 PowerShell 降级测试（功能有限但基本可用）。
+
+### 第三步：运行验机
+
+- **图形界面（推荐）**：双击 `run_windows_gui.bat`
+- **命令行**：双击 `run_windows.bat`
+
+验机完成后，结果保存在 `output/<时间戳>/` 目录，并自动打包为 ZIP。
+
+---
+
+## 工具下载链接
+
+| 工具 | 下载地址 | 是否必须 | 说明 |
+|------|---------|---------|------|
+| HWiNFO64 | https://www.hwinfo.com/download/ | 建议 | 单文件 portable 版 |
+| FurMark | https://geeks3d.com/furmark/ | 建议 | 需安装，安装到 `tools/FurMark/` |
+| OCCT | https://www.ocbase.com/download | 建议 | 需安装，安装到 `tools/OCCT/` |
+| CrystalDiskInfo | https://crystalmark.info/en/software/crystaldiskinfo/ | 可选 | 解压到 `tools/CrystalDiskInfo/` |
+
+---
+
+## 输出说明
+
+验机完成后 `output/<时间戳>/` 目录包含：
+
+| 文件 | 内容 |
+|------|------|
+| `system_info.txt` | 完整系统硬件信息（CPU/GPU/主板/内存/硬盘） |
+| `test_summary.txt` | 各测试步骤的通过/失败/跳过状态 |
+| `session_transcript.log` | 完整运行日志 |
+| `furmark_log.txt` | 显卡压力测试日志 |
+| `occt_log.txt` | 显存测试日志 |
+| `cpu_stress_log.txt` | CPU 压力测试日志 |
+| `memory_test_log.txt` | 内存稳定性测试日志 |
+| `disk_health.txt` | 硬盘 SMART 健康报告 |
+| `thermal_stress_log.txt` | 散热综合测试日志 |
+| `hwinfo_sensors.csv` | 传感器时序数据（温度/功耗/频率，用 Excel 打开） |
+| `screenshot_*.png` | 测试前后及各阶段截图 |
+
+---
+
+## 常见问题
+
+**Q: 运行时提示"此脚本无法运行"？**
+A: 右键 `run_windows_gui.bat` → "以管理员身份运行"
+
+**Q: 截图是黑屏？**
+A: 部分系统的图形保护会阻止截图。手动截图（Win+Shift+S）保存到 `output/` 目录即可。
+
+**Q: 没有 OCCT/FurMark 也能用吗？**
+A: 可以。内置 PowerShell 降级测试（CPU 多线程数学循环 + 内存读写校验），功能有限但基本可用。
+
+**Q: 验机结果能造假吗？**
+A: 卖家本地运行无法保证 100% 防伪，建议买家在场或视频验机，结合型号序列号核实。
+
+---
+
+## 系统要求
+
+- Windows 10 / Windows 11
+- PowerShell 5.0+（系统自带）
+- 4 GB 以上可用内存
+
+---
+
+## License
+
+MIT License — 详见 [LICENSE](LICENSE)

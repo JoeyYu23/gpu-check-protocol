@@ -1,6 +1,6 @@
 # PC Check Protocol
 
-[![中文](https://img.shields.io/badge/语言-中文-blue?style=for-the-badge)](README_CN.md) [![English](https://img.shields.io/badge/Lang-English-red?style=for-the-badge)](README.md)
+[中文](README_CN.md) | English
 
 **Used-PC verification tool for second-hand computer transactions**
 

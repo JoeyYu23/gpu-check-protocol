@@ -1,6 +1,6 @@
 # PC Check Protocol
 
-[![中文](https://img.shields.io/badge/语言-中文-red?style=for-the-badge)](README_CN.md) [![English](https://img.shields.io/badge/Lang-English-blue?style=for-the-badge)](README.md)
+中文 | [English](README.md)
 
 **二手电脑交易验机工具**
 
